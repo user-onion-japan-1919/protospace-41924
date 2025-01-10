@@ -1,0 +1,60 @@
+<div class="main">
+  <div class="inner">
+    <div class="user__wrapper">
+      <h2 class="page-heading">
+        <%= "#{@user.name}さんの情報" %>  <!-- ユーザーの名前 -->
+      </h2>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th class="table__col1">名前</th>
+            <td class="table__col2"><%= @user.name %></td>  <!-- ユーザー名 -->
+          </tr>
+          <tr>
+            <th class="table__col1">プロフィール</th>
+            <td class="table__col2"><%= @user.profile %></td>  <!-- ユーザーのプロフィール -->
+          </tr>
+          <tr>
+            <th class="table__col1">所属</th>
+            <td class="table__col2"><%= @user.occupation %></td>  <!-- ユーザーの所属 -->
+          </tr>
+          <tr>
+            <th class="table__col1">役職</th>
+            <td class="table__col2"><%= @user.position %></td>  <!-- ユーザーの役職 -->
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="page-heading">
+        <%= "#{@user.name}さんのプロトタイプ" %>  <!-- ユーザーのプロトタイプ -->
+      </h2>
+      <div class="user__card">
+        <% @user.prototypes.each do |prototype| %>  <!-- ユーザーの各プロトタイプを表示 -->
+          <div class="prototype-card">
+            <h3><%= link_to prototype.title, prototype_path(prototype) %></h3> <!-- プロトタイプのリンク -->
+            <p><%= prototype.catch_copy %></p>
+            <p><%= prototype.concept %></p>
+            <!-- 必要に応じて他のプロトタイプ情報を追加 -->
+          </div>
+        <% end %>
+      </div>
+
+      <% if user_signed_in? %>  <!-- ログインしている場合にコメント投稿フォームを表示 -->
+        <h3 class="page-heading">コメント投稿</h3>
+        <div class="comment__form">
+          <%= form_with(model: [ @user, @comment ], local: true) do |f| %>  <!-- コメントフォーム -->
+            <div class="field">
+              <%= f.label :content, "コメント" %>  <!-- コメントのラベル -->
+              <%= f.text_area :content, id: "comment_content", rows: 4 %>  <!-- コメント入力エリア -->
+            </div>
+            <div class="actions">
+              <%= f.submit "コメントする", class: "btn btn-primary" %>  <!-- コメント送信ボタン -->
+            </div>
+          <% end %>
+        </div>
+      <% else %>  <!-- ログインしていない場合のメッセージ -->
+        <p>ログインしてコメントを投稿できます。</p>
+      <% end %>
+    </div>
+  </div>
+</div>

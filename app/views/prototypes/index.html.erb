@@ -11,29 +11,35 @@
     <div class="card__wrapper">
       <% @prototypes.each do |prototype| %>
         <div class="prototype">
-          <h2><%= prototype.title %></h2>
+
+
+          <%# 画像をクリックして詳細ページに遷移できるリンクを追加 %>
+          <%= link_to prototype_path(prototype) do %>
+            <%= image_tag prototype.image if prototype.image.attached? %>
+          <% end %>
+
+                    <h2><%= prototype.title %></h2>
           <p><%= prototype.catch_copy %></p>
-          <p><%= prototype.concept %></p>
-          <%= image_tag prototype.image if prototype.image.attached? %>
+                              <p>by 
+  <% if prototype.user.present? %>
+    <%= link_to prototype.user.name, user_path(prototype.user) %> <!-- 投稿者のユーザー詳細ページへのリンク -->
+  <% else %>
+    不明 <!-- 投稿者がいない場合の処理 -->
+  <% end %>
+</p>
+
 
           <%# 投稿者が現在のログインユーザーの場合のみ「編集」「削除」を表示 %>
           <% if prototype.user.present? && prototype.user == current_user %>
             <div class="prototype__manage">
-              <%= link_to "編集する", edit_prototype_path(prototype), class: :prototype__btn %>
-              <%= link_to "削除する", prototype_path(prototype), method: :delete, data: { confirm: "本当に削除してもよろしいですか？" }, class: :prototype__btn %>
+             
             </div>
           <% elsif prototype.user.nil? %>
             <p>投稿者情報がありません。</p> <!-- 投稿者がいない場合の処理 -->
           <% end %>
 
           <%# プロトタイプの投稿者へのリンク %>
-          <p>投稿者: 
-            <% if prototype.user.present? %>
-              <%= link_to prototype.user.name, user_path(prototype.user) %> <!-- 投稿者のユーザー詳細ページへのリンク -->
-            <% else %>
-              不明 <!-- 投稿者がいない場合の処理 -->
-            <% end %>
-          </p>
+
         </div>
       <% end %>
     </div>

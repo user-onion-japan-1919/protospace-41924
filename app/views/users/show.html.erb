@@ -31,24 +31,29 @@
       <div class="user__card">
         <% @user.prototypes.each do |prototype| %>  <!-- ユーザーの各プロトタイプを表示 -->
           <div class="prototype-card">
-            <h3><%= link_to prototype.title, prototype_path(prototype) %></h3> <!-- プロトタイプのリンク -->
+               <%# プロトタイプ画像をクリックして詳細ページに遷移できるようにリンクを追加 %>
+            <%= link_to prototype_path(prototype) do %>
+              <%= image_tag prototype.image if prototype.image.attached? %>  <!-- 画像を表示 -->
+            <% end %>
+            <h3><%= prototype.title %></h3>
             <p><%= prototype.catch_copy %></p>
-            <p><%= prototype.concept %></p>
+            <p>by 
+  <% if prototype.user.present? %>
+    <%= link_to prototype.user.name, user_path(prototype.user) %> <!-- 投稿者のユーザー詳細ページへのリンク -->
+  <% else %>
+    不明 <!-- 投稿者がいない場合の処理 -->
+  <% end %>
+</p>
             <!-- 必要に応じて他のプロトタイプ情報を追加 -->
           </div>
         <% end %>
       </div>
 
       <% if user_signed_in? %>  <!-- ログインしている場合にコメント投稿フォームを表示 -->
-        <h3 class="page-heading">コメント投稿</h3>
-        <div class="comment__form">
-          <%= form_with(model: [ @user, @comment ], local: true) do |f| %>  <!-- コメントフォーム -->
+      
+           <%= form_with(model: [ @user, @comment ], local: true) do |f| %>  <!-- コメントフォーム -->
             <div class="field">
-              <%= f.label :content, "コメント" %>  <!-- コメントのラベル -->
-              <%= f.text_area :content, id: "comment_content", rows: 4 %>  <!-- コメント入力エリア -->
-            </div>
-            <div class="actions">
-              <%= f.submit "コメントする", class: "btn btn-primary" %>  <!-- コメント送信ボタン -->
+              
             </div>
           <% end %>
         </div>

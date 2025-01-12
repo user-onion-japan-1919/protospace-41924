@@ -11,7 +11,7 @@
       <% if @prototype.user == current_user %>
         <div class="prototype__manage">
           <%= link_to "編集する", edit_prototype_path(@prototype), class: :prototype__btn %>
-          <%= link_to "削除する", prototype_path(@prototype), method: :delete, data: { confirm: '本当に削除してもよろしいですか？' }, class: :prototype__btn %>
+          <%= link_to "削除する", prototype_path(@prototype), data: { turbo_method: :delete }, class: :prototype__btn %>
         </div>
       <% end %>
 
@@ -36,5 +36,31 @@
         </div>
       </div>
     </div>
+
+ <!-- コメント一覧とコメント投稿フォームをここに追加 -->
+    <div class="prototype__comments">
+      <h3></h3>
+      <% @comments.each do |comment| %>
+        <div class="comment">
+          <strong><%= comment.user.name %>:</strong>
+          <p><%= comment.content %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <% if user_signed_in? %>
+      <%= form_with(model: [@prototype, @comment], local: true) do |f| %>
+        <div class="field">
+          <%= f.label :content, "コメント" %>
+          <%= f.text_area :content, rows: 1 %>
+        </div>
+        <div class="actions">
+          <%= f.submit "送信する"%>
+        </div>
+      <% end %>
+    <% else %>
+      <p>ログインするとコメントを投稿できます。</p>
+    <% end %>
+
   </div>
 </main>

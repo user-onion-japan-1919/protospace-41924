@@ -21,12 +21,14 @@ class PrototypesController < ApplicationController
 
     if @prototype.save
       redirect_to @prototype, notice: "プロトタイプを投稿しました。"
+      return  # ここでメソッドを終了させ、以降の処理が実行されないようにする
     else
       render :new
     end
   end
 
   def show
+    @comment = Comment.new  
     @comments = @prototype.comments.includes(:user)  # ここで投稿に関連するコメントを取得
   end
 

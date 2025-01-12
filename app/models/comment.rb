@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
   belongs_to :user  # usersテーブルとのアソシエーション
 
 # バリデーション
-validates :content, presence: true, length: { maximum: 300 }
+validates :content, presence: true
 
 end
  

@@ -17,6 +17,7 @@ class PrototypesController < ApplicationController
 
   def create
     @prototype = Prototype.new(prototype_params)
+    @prototype.user = current_user
     if @prototype.save
       redirect_to root_path, notice: '投稿が成功しました。'
     else

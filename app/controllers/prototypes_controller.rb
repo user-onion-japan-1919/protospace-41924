@@ -40,7 +40,7 @@ class PrototypesController < ApplicationController
     if @prototype.update(prototype_params)
       redirect_to @prototype, notice: "プロトタイプを更新しました。"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

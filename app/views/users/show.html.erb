@@ -35,7 +35,7 @@
             <%= link_to prototype_path(prototype) do %>
               <%= image_tag prototype.image if prototype.image.attached? %>  <!-- 画像を表示 -->
             <% end %>
-            <h3><%= prototype.title %></h3>
+            <%= link_to prototype.title, prototype_path(prototype), class: "prototype__title" %>
             <p><%= prototype.catch_copy %></p>
             <p>by 
   <% if prototype.user.present? %>

@@ -17,17 +17,16 @@ class PrototypesController < ApplicationController
 
   def create
     @prototype = Prototype.new(prototype_params)
-    @prototype.user = current_user
-
     if @prototype.save
-      redirect_to @prototype, notice: "プロトタイプを投稿しました。"
-      return  # ここでメソッドを終了させ、以降の処理が実行されないようにする
+      redirect_to root_path, notice: '投稿が成功しました。'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   def show
+
+    @prototype = Prototype.find(params[:id])
     @comment = Comment.new  
     @comments = @prototype.comments.includes(:user)  # ここで投稿に関連するコメントを取得
   end

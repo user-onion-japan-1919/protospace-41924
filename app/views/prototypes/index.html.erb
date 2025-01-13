@@ -17,8 +17,9 @@
           <%= link_to prototype_path(prototype) do %>
             <%= image_tag prototype.image if prototype.image.attached? %>
           <% end %>
+<%= link_to prototype.title, prototype_path(prototype), class: "prototype__title" %>
 
-                    <h2><%= prototype.title %></h2>
+
           <p><%= prototype.catch_copy %></p>
                               <p>by 
   <% if prototype.user.present? %>

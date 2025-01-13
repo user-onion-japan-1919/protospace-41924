@@ -2,13 +2,13 @@ class CommentsController < ApplicationController
   def create
     @prototype = Prototype.find(params[:prototype_id])
     @comment = Comment.new(comment_params)
-    if @comment.save
-      redirect_to prototype_path(@comment.prototype), notice: 'コメントを投稿しました。'
+    if @comment.content.blank? # コメントが空の場合
+      redirect_to prototype_path(@prototype) # 空のコメントが送信された場合は詳細ページに戻す
+    elsif @comment.save
+      redirect_to prototype_path(@prototype), notice: 'コメントが投稿されました。'
     else
-      @prototype = @comment.prototype
-      @comments = @prototype.comments.includes(:user)
-      flash.now[:alert] = 'コメントの投稿に失敗しました。'
-      render 'prototypes/show'
+      # コメントが保存できない場合（内容が空でない場合）
+      render 'prototypes/show', status: :unprocessable_entity
     end
   end
 
